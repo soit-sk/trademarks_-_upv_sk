@@ -1,0 +1,1 @@
+Scraper for trademark data from "Industrial Property Office Slovak Republic":http://registre.indprop.gov.sk/registre/searchForm.do?lang=en&register=oz
