@@ -78,12 +78,12 @@ for id in xrange(min_id, max_id+1):
     try:
         root = fetchHtml(detailUrl % id)
     except:
-        #print "Failed to fetch id %d" % id
+        print "Failed to fetch id %d" % id
         continue
     rows = root.cssselect("table tr")
     
     if len(rows) < 1:
-        #print "No data for id %d" % id
+        print "No data for id %d" % id
         continue
     
     dbData = {'id': id}
