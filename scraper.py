@@ -99,9 +99,8 @@ for id in xrange(min_id, max_id+1):
         if field:
             dbData[field] = conversion(value)
     
-    if len(dbData) > 1: #skip page in case no data for id is returned
-        print dbData
-#        scraperwiki.sqlite.save(unique_keys=['id'], data = dbData)
-#    scraperwiki.sqlite.save_var("min_id", id+1)
+    if len(dbData) > 1: #skip page in case no data for id is return
+        scraperwiki.sqlite.save(unique_keys=['id'], data = dbData)
+    scraperwiki.sqlite.save_var("min_id", id+1)
 
-#scraperwiki.sqlite.save_var("min_id", 1)
+scraperwiki.sqlite.save_var("min_id", 1)
