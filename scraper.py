@@ -90,15 +90,16 @@ for id in xrange(min_id, max_id+1):
     dbData = {'id': id}
     for row in rows:
         tds = row.cssselect("td")
-        caption = tds[1].text_content().encode("utf-8")
-        value = tds[2].text_content()
-        
-        field_conversion = caption2field.get(caption)
-        if field_conversion is None:
-            continue #ignored field
-        (field, conversion) = field_conversion
-        if field:
-            dbData[field] = conversion(value)
+        if len(tds) > 2:
+            caption = tds[1].text_content().encode("utf-8")
+            value = tds[2].text_content()
+
+            field_conversion = caption2field.get(caption)
+            if field_conversion is None:
+                continue #ignored field
+            (field, conversion) = field_conversion
+            if field:
+                dbData[field] = conversion(value)
     
     if len(dbData) > 1: #skip page in case no data for id is return
         scraperwiki.sqlite.save(unique_keys=['id'], data = dbData)
