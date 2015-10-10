@@ -73,6 +73,7 @@ if not min_id:
 print "Start or continue from id: ", min_id
 
 max_id = getMaxId()
+print "max id is: %d\n" % max_id
 
 for id in xrange(min_id, max_id+1):
     scraperwiki.sqlite.save_var("min_id", id)
