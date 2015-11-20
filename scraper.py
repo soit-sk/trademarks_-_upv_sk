@@ -6,6 +6,7 @@ import lxml.html
 import re
 from datetime import datetime
 from time import sleep
+import time
 
 #this could use enum, not sure if scraperwiki supports it
 statusDict = \
@@ -18,6 +19,10 @@ statusDict = \
 
 overviewUrl="http://registre.indprop.gov.sk/registre/search.do?value%28register%29=oz&value%28sortorder%29=desc&value%28page%29=1&value%28sortorder%29=desc&value%28search%29=true&value%28sortby%29=datum_prihlasky"
 detailUrl = "http://registre.indprop.gov.sk/registre/detail/popup.do?register=oz&puv_id=%d"
+
+#morph.io has trouble stopping scraper after 24 hours
+time_limit = 16 * 60 * 60
+start_time = time.time()
 
 def toDate(s):
     try:
@@ -77,6 +82,11 @@ max_id = getMaxId()
 print "max id is: %d\n" % max_id
 
 for id in xrange(min_id, max_id+1):
+    current_time = time.time()
+    if (current_time - start_time) >= time_limit:
+        print 'Time limit reached (%d s)...' % time_limit
+        break
+
     scraperwiki.sqlite.save_var("min_id", id)
     try:
         root = fetchHtml(detailUrl % id)
@@ -108,4 +118,7 @@ for id in xrange(min_id, max_id+1):
     if len(dbData) > 1: #skip page in case no data for id is return
         scraperwiki.sqlite.save(unique_keys=['id'], data = dbData)
 
-scraperwiki.sqlite.save_var("min_id", 1)
+# time limit was not reached, so every id was read
+# want to start from minimum id next time
+if (current_time - start_time) <= time_limit:
+    scraperwiki.sqlite.save_var("min_id", 1)
