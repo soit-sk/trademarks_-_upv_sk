@@ -85,7 +85,8 @@ for id in xrange(min_id, max_id+1):
     rows = root.cssselect("table tr")
     
     if len(rows) < 1:
-        print "No data for id %d" % id
+        if id % 5000 == 0:
+            print "No data for id %d" % id
         continue
     
     dbData = {'id': id}
